@@ -15,7 +15,8 @@ public class Toolbar : MonoBehaviour
 
     private void Start()
     {
-        world = GameObject.Find("World").GetComponent<World>();
+        world  = GameObject.Find("World").GetComponent<World>();
+        player = GameObject.Find("PlayerObject").GetComponent<Player>();
 
         foreach (ItemSlot slot in itemSlots)
         {

@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
     {
         cam   = GameObject.Find("Main Camera").transform;
         world = GameObject.Find("World").GetComponent<World>();
+        highlightBlock = GameObject.Find("HighlightBlock").transform;
+        placeBlock     = GameObject.Find("PlaceHighlightBlock").transform;
 
         Cursor.lockState = CursorLockMode.Locked;
     }

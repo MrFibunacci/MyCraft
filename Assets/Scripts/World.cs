@@ -32,11 +32,34 @@ public class World : MonoBehaviour
 
     private void Start()
     {
+        Init();
         Random.InitState(seed);
 
         spawnPosition = new Vector3((VoxelData.WorldSizeInChunks * VoxelData.ChunkWidth) / 2f, VoxelData.ChunkHeight - 50f, (VoxelData.WorldSizeInChunks * VoxelData.ChunkWidth) / 2f);
         GenerateWorld();
         playerLastChunkCoord = GetChunkCoordFromVector3(player.position);
+    }
+
+    /**
+     * Create all the assetets required in scene
+     */
+    private void Init()
+    {
+        GameObject placeHighlightBlock;
+        GameObject highlightBlock;
+        GameObject canvas;
+
+        placeHighlightBlock = Instantiate(Resources.Load<GameObject>("Prefab/PlaceHighlightBlock"), new Vector3(), Quaternion.identity);
+        placeHighlightBlock.name = "PlaceHighlightBlock";
+        
+        highlightBlock = Instantiate(Resources.Load<GameObject>("Prefab/HighlightBlock"), new Vector3(), Quaternion.identity);
+        highlightBlock.name = "HighlightBlock";
+
+        canvas = Instantiate(Resources.Load<GameObject>("Prefab/Canvas"), new Vector3(), Quaternion.identity);
+        canvas.name = "Canvas";
+
+        player = Instantiate(Resources.Load<GameObject>("Prefab/PlayerObject"), spawnPosition, Quaternion.identity).transform;
+        player.name = "PlayerObject";
     }
 
     private void Update()
