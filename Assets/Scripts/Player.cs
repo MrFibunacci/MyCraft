@@ -16,7 +16,8 @@ public class Player : MonoBehaviour
     public float junpForce   = 5f;
     public float gravity     = -9.8f;
 
-    public float playerWidth = 0.3f;
+    public float playerWidth     = 0.15f;
+    public float boundsTolerance = 0.1f;
 
     private float   horizontal;
     private float   vertical;
@@ -169,6 +170,7 @@ public class Player : MonoBehaviour
             }
 
             lastPos = new Vector3(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
+
             step += checkIncrement;
         }
 
@@ -186,17 +188,13 @@ public class Player : MonoBehaviour
             world.CheckForVoxel(new Vector3(transform.position.x - playerWidth, transform.position.y + downSpeed, transform.position.z + playerWidth))
            )
         {
-
             isGrounded = true;
             return 0;
-
         }
         else
         {
-
             isGrounded = false;
             return downSpeed;
-
         }
 
     }

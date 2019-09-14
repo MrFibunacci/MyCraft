@@ -176,7 +176,7 @@ public class Chunk
 
         UpdateSurroundingVoxels(xCheck, yCheck, zCheck);
 
-        UpdateChunk();
+        _updateChunk();
     }
 
     void UpdateSurroundingVoxels(int x, int y, int z)
@@ -189,7 +189,7 @@ public class Chunk
 
             if (! IsVoxelInChunk((int)currentVoxel.x, (int)currentVoxel.y, (int)currentVoxel.z))
             {
-                world.GetChunkFromVector3(thisVoxel + position).UpdateChunk();
+                world.GetChunkFromVector3(currentVoxel + position).UpdateChunk();
             }
         }
     }

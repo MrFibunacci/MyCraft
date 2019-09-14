@@ -68,40 +68,28 @@ public class World : MonoBehaviour
 
         // Only update the chunks if the player has moved from the chunk they were previously on.
         if (!playerChunkCoord.Equals(playerLastChunkCoord))
-        {
             CheckViewDistance();
-        }
 
-        if (! applyingModifications)
-        {
+        if (!applyingModifications)
             ApplyModifications();
-        }
 
         if (chunksToCreate.Count > 0)
-        {
             CreateChunk();
-        }
 
         if (chunksToUpdate.Count > 0)
-        {
             UpdateChunks();
-        }
 
         if (chunksToDraw.Count > 0)
-        {
             lock (chunksToDraw)
             {
                 if (chunksToDraw.Peek().isEditable)
-                {
                     chunksToDraw.Dequeue().CreateMesh();
-                }
             }
-        }
+
 
         if (Input.GetKeyDown(KeyCode.F3))
-        {
             debugScreen.SetActive(!debugScreen.activeSelf);
-        }
+
     }
 
     void GenerateWorld()
@@ -218,7 +206,6 @@ public class World : MonoBehaviour
                     {
                         chunks[x, z].isActive = true;
                     }
-
                     activeChunks.Add(new ChunkCoord(x, z));
                 }
 
@@ -226,18 +213,15 @@ public class World : MonoBehaviour
                 for (int i = 0; i < previouslyActiveChunks.Count; i++)
                 {
                     if (previouslyActiveChunks[i].Equals(new ChunkCoord(x, z)))
-                    {
                         previouslyActiveChunks.RemoveAt(i);
-                    }
                 }
+
             }
         }
 
         // Any chunks left in the previousActiveChunks list are no longer in the player's view distance, so loop through and disable them.
         foreach (ChunkCoord c in previouslyActiveChunks)
-        {
             chunks[c.x, c.z].isActive = false;
-        }
     }
 
     public bool CheckForVoxel(Vector3 pos)
@@ -274,15 +258,11 @@ public class World : MonoBehaviour
 
         // If outside world, return air.
         if (!IsVoxelInWorld(pos))
-        {
             return 0;
-        }
 
         // If bottom block of chunk, return bedrock.
         if (yPos == 0)
-        {
             return 1;
-        }
 
         /* BASIC TERRAIN PASS */
 
@@ -290,21 +270,13 @@ public class World : MonoBehaviour
         byte voxelValue = 0;
 
         if (yPos == terrainHeight)
-        {
             voxelValue = 3;
-        }
         else if (yPos < terrainHeight && yPos > terrainHeight - 4)
-        {
             voxelValue = 5;
-        }
         else if (yPos > terrainHeight)
-        {
             return 0;
-        }
         else
-        {
             voxelValue = 2;
-        }
 
         /* SECOND PASS */
 
@@ -313,12 +285,8 @@ public class World : MonoBehaviour
             foreach (Lode lode in biome.lodes)
             {
                 if (yPos > lode.minHeight && yPos < lode.maxHeight)
-                {
                     if (Noise.Get3DPerlin(pos, lode.noiseOffset, lode.scale, lode.threshold))
-                    {
                         voxelValue = lode.blockID;
-                    }
-                }
             }
         }
 
@@ -326,9 +294,9 @@ public class World : MonoBehaviour
 
         if (yPos == terrainHeight)
         {
-            if (Noise.Get2DPerlin(new Vector2(pos.x, pos.y), 0, biome.treeZoneScale) > biome.treeZoneThreshold)
+            if (Noise.Get2DPerlin(new Vector2(pos.x, pos.z), 0, biome.treeZoneScale) > biome.treeZoneThreshold)
             {
-                if(Noise.Get2DPerlin(new Vector2(pos.x, pos.y), 0, biome.treePlacementScale) > biome.treePlacementThreshold)
+                if (Noise.Get2DPerlin(new Vector2(pos.x, pos.z), 0, biome.treePlacementScale) > biome.treePlacementThreshold)
                 {
                     modifications.Enqueue(Structure.MakeTree(pos, biome.minTreeHeight, biome.maxTreeHeight));
                 }
@@ -341,25 +309,17 @@ public class World : MonoBehaviour
     bool IsChunkInWorld(ChunkCoord coord)
     {
         if (coord.x > 0 && coord.x < VoxelData.WorldSizeInChunks - 1 && coord.z > 0 && coord.z < VoxelData.WorldSizeInChunks - 1)
-        {
             return true;
-        }
         else
-        {
             return false;
-        }
     }
 
     bool IsVoxelInWorld(Vector3 pos)
     {
         if (pos.x >= 0 && pos.x < VoxelData.WorldSizeInVoxels && pos.y >= 0 && pos.y < VoxelData.ChunkHeight && pos.z >= 0 && pos.z < VoxelData.WorldSizeInVoxels)
-        {
             return true;
-        }
         else
-        {
             return false;
-        }
     }
 }
 
